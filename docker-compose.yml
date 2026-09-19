@@ -1,0 +1,44 @@
+# =====================================================================
+# 用法：
+#   构建并启动：  docker compose up --build
+#   只构建：     docker compose build
+#   进入容器：   docker compose run --rm metric3d bash
+# =====================================================================
+version: "3.8"
+
+services:
+  metric3d:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: metric3d-trt:latest
+    container_name: metric3d
+
+    # 必须：启用 NVIDIA GPU
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+    # 挂载大文件：模型权重、engine、数据集、输出
+    volumes:
+      # 项目代码（开发时挂载，改代码不用重 build）
+      - ./:/workspace/Metric3D
+      # 模型权重
+      - /root/ly/Map/metric_depth_vit_large_800k.pth:/models/metric_depth_vit_large_800k.pth:ro
+      # TRT engine
+      - /root/ly/Map/Metric3D/onnx:/trt_engines:ro
+      # 数据集（按需修改路径）
+      - /root/ly/Map:/data
+
+    # 时区
+    environment:
+      - TZ=Asia/Shanghai
+      - PYTHONPATH=/workspace/Metric3D
+
+    # 容器退出后自动删除（调试时可以去掉）
+    # tty: true
+    # stdin_open: true

@@ -1,0 +1,53 @@
+# === 数据集（用 volume 挂载，不进镜像）===
+Datas01/
+Datas02/
+Datas03/
+Datas04/
+Datas05/
+Datas06/
+Datas07/
+Datas*/
+data/
+dataset/
+
+# === 模型权重 / TRT engine（用 volume 挂载）===
+*.pth
+*.onnx
+*.engine
+*.plan
+
+# === 输出结果 ===
+output_*/
+cloud/
+cloud_ego/
+depth/
+undistort/
+new_K/
+*_fused.ply
+*.ply
+*.pcd
+
+# === Python 缓存 ===
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+# === IDE / 系统 ===
+.vscode/
+.idea/
+.DS_Store
+*.log
+*.tmp
+
+# === Git ===
+.git/
+.gitignore
+
+# === 临时文件 ===
+/tmp/
+*.swp
+*~
